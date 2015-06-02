@@ -1,12 +1,21 @@
 FROM node:0.10
 
 RUN apt-get update && \
-    DEBIAN_FRONTEND=non-interactive apt-get install ruby-full -y && \
+    DEBIAN_FRONTEND=non-interactive apt-get install ruby-full pkg-config gcc g++ libfreetype6-dev libglib2.0-dev libcairo2-dev libharfbuzz-dev flex bison -y && \
     apt-get clean
 
 RUN gem install sass
 
 RUN npm install -g npm@next && npm install -g bower && npm install -g grunt-cli
+
+RUN cd /tmp \
+    && git clone git://repo.or.cz/ttfautohint.git \
+    && cd ttfautohint \
+    && ./bootstrap \
+    && ./configure --with-qt=no --with-doc=no \
+    && make install \
+    && cd .. \
+    && rm -rf ttfautohint
 
 RUN echo "user0:x:1000:1000:User 0:/tmp:/bin/false" >> /etc/passwd && \
     echo "user1:x:1001:1001:User 1:/tmp:/bin/false" >> /etc/passwd && \
