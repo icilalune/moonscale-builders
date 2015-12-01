@@ -1,4 +1,4 @@
-FROM node:0.10
+FROM node:5
 
 RUN apt-get update && \
     DEBIAN_FRONTEND=non-interactive apt-get install ruby-full pkg-config gcc g++ libfreetype6-dev libglib2.0-dev libcairo2-dev libharfbuzz-dev flex bison -y && \
@@ -6,7 +6,8 @@ RUN apt-get update && \
 
 RUN gem install sass
 
-RUN npm install -g npm@next && npm install -g bower && npm install -g grunt-cli
+RUN npm install -g bower \
+    && npm install -g grunt-cli
 
 RUN cd /tmp \
     && git clone git://repo.or.cz/ttfautohint.git \
